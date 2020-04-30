@@ -17,7 +17,7 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 copyright 2019-2020 Oriol Pando, Daniel Amo\
 author      Oriol Pando <oriol.pando@gmail.com>\
-license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\
+license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 
 API Proxy module
