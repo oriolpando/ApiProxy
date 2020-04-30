@@ -59,7 +59,7 @@ class mod_apiproxy_log_form extends moodleform{
 
         $info = apiproxy_get_log($_SESSION['apid'], 0);
         $logs = array();
-        $htmlString = '<table><tr><th>User</th><th>Call Type</th><th>Content</th><th>Log Time</th></tr>';
+        $htmlString = '<div class=\'info\' ><table class=\'main\'><tr><th>User</th><th>Call Type</th><th>Content</th><th>Log Time</th></tr>';
         foreach ($info as $element) { 
 
             $user = apiproxy_get_username($element->userid);
@@ -85,6 +85,39 @@ class mod_apiproxy_log_form extends moodleform{
         }
         
         $mform->addElement('html', $htmlString . '</table>');
+
+        $totalReq = apiproxy_get_stat($_SESSION['apid'], true, 10);
+
+        $totalSucces = apiproxy_get_stat($_SESSION['apid'], true, 0);
+        $successGet = apiproxy_get_stat($_SESSION['apid'], true, 1);
+        $successPost = apiproxy_get_stat($_SESSION['apid'], true, 2);
+
+        
+        $htmlString = '';
+        $htmlString = '<table class=\'success\'><tr><th>Success Type</th><th>Nº</th></tr>';
+        $htmlString .= '<tr><td>Total Requests</td><td>' . $totalReq . '</td></tr>';
+        $htmlString .= '<tr><td>Total Successes</td><td>' . $totalSucces . '</td></tr>';
+        $htmlString .= '<tr><td>GET Successes</td><td>' . $successGet . '</td></tr>';
+        $htmlString .= '<tr><td>POST Successes</td><td>' . $successPost . '</td></tr>';
+
+        $mform->addElement('html', $htmlString . '</table>');
+
+        $totalFails = apiproxy_get_stat($_SESSION['apid'], false, 0);
+        $incorrectParams = apiproxy_get_stat($_SESSION['apid'], false, 1);
+        $incorrectValues = apiproxy_get_stat($_SESSION['apid'], false, 2);
+        $internalError = apiproxy_get_stat($_SESSION['apid'], false, 3);
+
+
+        $htmlString = '';
+        $htmlString = '<table class=\'fail\'><tr><th>Error Type</th><th>Nº</th></tr>';
+        $htmlString .= '<tr><td>Total Requests</td><td>' . $totalReq . '</td></tr>';
+        $htmlString .= '<tr><td>Total Fails</td><td>' . $totalFails . '</td></tr>';
+        $htmlString .= '<tr><td>Malformed Strings</td><td>' . $incorrectValues . '</td></tr>';
+        $htmlString .= '<tr><td>Incorrect Parameters</td><td>' . $incorrectParams . '</td></tr>';
+        $htmlString .= '<tr><td>Incorrect Values</td><td>' . $incorrectValues . '</td></tr>';
+        $htmlString .= '<tr><td>External API Internal Errors</td><td>' . $internalError . '</td></tr>';
+
+        $mform->addElement('html', $htmlString . '</table></div>');
 
         $mform->addElement('html', '<a class="qheader">');
 

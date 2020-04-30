@@ -119,6 +119,17 @@ if(!empty($token)){
                         echo 'Invalid parameters - parmeter not found';
                         exit();
                     }else{
+                        if (empty($value)) {
+                            $now = new DateTime("now", core_date::get_server_timezone_object());
+                            $log = array('apiid' => $id,
+                                'userid' => $user['user']->id,
+                                'type' => '-',
+                                'comment' => 'Fail - Empty value',
+                                'logtime' => $now->getTimestamp());
+                            apiproxy_add_log($log);
+                            echo 'Invalid value - empty value';
+                            exit();
+                        }
                         if ($apitype){
                             //$finalparams[$params[array_search($key, $params)]] =  $value;
                             $finalparams .= $params[array_search($key, $params)] . "=" .  $value . "&";
@@ -156,7 +167,7 @@ if(!empty($token)){
                         'comment' => 'Success',
                         'logtime' => $now->getTimestamp());
                     apiproxy_add_log($log);
-                    echo apiRedirectPost($realurl, $finalparams);
+                    echo apiRedirectPost($realurl, $finalparams, $id, $user);
                 }else{
                     //GET
                     /*
@@ -178,7 +189,7 @@ if(!empty($token)){
                         'comment' => 'Success',
                         'logtime' => $now->getTimestamp());
                     apiproxy_add_log($log);
-                    echo apiRedirect($url);
+                    echo apiRedirect($url, $id, $user);
                 }
             }
 
@@ -207,7 +218,7 @@ if(!empty($token)){
     exit();
 }
 
-function apiRedirect($url) {
+function apiRedirect($url, $id, $user) {
     $options = array(
         CURLOPT_RETURNTRANSFER => true,   // return web page
         CURLOPT_HEADER         => false,  // don't return headers
@@ -229,6 +240,13 @@ function apiRedirect($url) {
 
         if ($err) {
             echo "cURL Error #:" . $err;
+            $now = new DateTime("now", core_date::get_server_timezone_object());
+            $log = array('apiid' => $id,
+                'userid' => $user['user']->id,
+                'type' => '-',
+                'comment' => 'Fail - External API internal Error',
+                'logtime' => $now->getTimestamp());
+            apiproxy_add_log($log);
         } else {
             curl_close($ch);
             return $content;
@@ -240,7 +258,7 @@ function apiRedirect($url) {
     }
 }
 
-function apiRedirectPost($url, $finalparams) {
+function apiRedirectPost($url, $finalparams, $id, $user) {
 
     $options = array(
         CURLOPT_POST           => 1,
@@ -259,6 +277,13 @@ function apiRedirectPost($url, $finalparams) {
 
     } catch (\Exception $e) {
 
+        $now = new DateTime("now", core_date::get_server_timezone_object());
+        $log = array('apiid' => $id,
+            'userid' => $user['user']->id,
+            'type' => '-',
+            'comment' => 'Fail - External API internal Error',
+            'logtime' => $now->getTimestamp());
+        apiproxy_add_log($log);
         return 'Failed call';
     }
 }

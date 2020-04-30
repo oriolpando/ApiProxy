@@ -490,3 +490,48 @@ function apiproxy_get_username($id) {
 
     return $info;
 }
+
+/**
+ * get statistics.
+ * 
+ * @param stdClass $data
+ * @param mod_apiproxy_mod_form $mform
+ * @return int new apiproxy instance id
+ */
+function apiproxy_get_stat($id, $type, $option) { 
+    global $CFG, $DB;
+
+    if ($type) {
+        switch ($option) {
+            case '10':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id);
+                break;
+            case '0':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'Success\';');
+                break;
+            case '1':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'Success\' AND type LIKE \'GET\';');
+                break;
+            case '2':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'Success\' AND type LIKE \'POST\';');
+                break;
+        }
+    }else {
+        switch ($option) {
+            case '0':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'%Fail%\';');
+                break;
+            case '1':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'Fail - Incorrect parameters\';');
+                break;
+            case '2':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'Fail - Empty value\';');
+                break;
+            case '3':
+                $info = $DB->get_record_sql('SELECT COUNT(*) AS count FROM {apiproxy_logs} WHERE apiid = ' . $id . ' AND comment LIKE \'Fail - External API internal Error\';');
+                break;
+        }
+    }
+
+    return $info->count;
+}
