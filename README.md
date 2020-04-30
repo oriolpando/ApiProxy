@@ -15,9 +15,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-copyright 2019-2020 Oriol Pando, Daniel Amo
-author      Oriol Pando <oriol.pando@gmail.com>
-license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+copyright 2019-2020 Oriol Pando, Daniel Amo\
+author      Oriol Pando <oriol.pando@gmail.com>\
+license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\
 
 
 API Proxy module
