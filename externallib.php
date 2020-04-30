@@ -15,13 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Apiproxy external API
+ * APIProxy external API
  *
  * @package    mod_apiproxy
  * @category   external
- * @copyright  2015 Juan Leyva <juan@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since      Moodle 3.0
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
+ * @author      Oriol Pando <oriol.pando@gmail.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
@@ -31,11 +31,11 @@ require_once("$CFG->libdir/externallib.php");
 /**
  * apiproxy external functions
  *
- * @package    mod_apiproxy
- * @category   external
- * @copyright  2015 Juan Leyva <juan@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since      Moodle 3.0
+ * @package     mod_apiproxy
+ * @category    external
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
+ * @author      Oriol Pando <oriol.pando@gmail.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_apiproxy_external extends external_api {
 

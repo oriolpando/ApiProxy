@@ -39,10 +39,11 @@
  *
  *
  * @package     mod_apiproxy
- * @copyright   2019 Oriol Pando, Daniel Amo
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
  * @author      Oriol Pando <oriol.pando@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die;
 
 function xmldb_apiproxy_upgrade($oldversion) {
@@ -140,7 +141,7 @@ function xmldb_apiproxy_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Apiproxy savepoint reached.
+        // APIProxy savepoint reached.
         upgrade_mod_savepoint(true, 2019112823, 'apiproxy');
     }
 

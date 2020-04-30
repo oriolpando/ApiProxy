@@ -17,9 +17,10 @@
 /**
  * The mod_apiproxy course module viewed event.
  *
- * @package    mod_apiproxy
- * @copyright  2013 Ankit Agarwal
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     mod_apiproxy
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
+ * @author      Oriol Pando <oriol.pando@gmail.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace mod_apiproxy\event;

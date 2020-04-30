@@ -19,7 +19,7 @@
  * Strings for component 'apiproxy', language 'en', branch 'MOODLE_20_STABLE'
  *
  * @package     mod_apiproxy
- * @copyright   2019 Oriol Pando, Daniel Amo
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
  * @author      Oriol Pando <oriol.pando@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -40,14 +40,14 @@ $string['contentparameterspost'] = 'Mapping of parameters of the POST request';
 $string['gotologs'] = 'Student logs';
 $string['downloadLogs'] = 'Download student logs as';
 $string['apifiles'] = 'Files';
-$string['createpage'] = 'Create a new page resource';
+$string['createpage'] = 'Create a new API Proxy resource';
 $string['displayoptions'] = 'Available display options';
 $string['displayselect'] = 'Display';
 $string['displayselectexplain'] = 'Select display type.';
-$string['indicator:cognitivedepth'] = 'Page cognitive';
-$string['indicator:cognitivedepth_help'] = 'This indicator is based on the cognitive depth reached by the student in a Page resource.';
-$string['indicator:socialbreadth'] = 'Page social';
-$string['indicator:socialbreadth_help'] = 'This indicator is based on the social breadth reached by the student in a Page resource.';
+$string['indicator:cognitivedepth'] = 'API Proxy cognitive';
+$string['indicator:cognitivedepth_help'] = 'This indicator is based on the cognitive depth reached by the student in a API Proxy resource.';
+$string['indicator:socialbreadth'] = 'API Proxy social';
+$string['indicator:socialbreadth_help'] = 'This indicator is based on the social breadth reached by the student in a API Proxy resource.';
 $string['legacyfiles'] = 'Migration of old course file';
 $string['legacyfilesactive'] = 'Active';
 $string['legacyfilesdone'] = 'Finished';
@@ -56,33 +56,27 @@ $string['updateGet_help'] = 'Careful! You will delete the previous GET Parameter
 $string['updateGet'] = 'updating GET Parameters';
 $string['updatePost_help'] = 'Careful! You will delete the previous POST Parameters with the same local parameter.';
 $string['updatePost'] = 'updating POST Parameters';
-$string['modulename_help'] = 'The page module enables a teacher to create a web page resource using the text editor. A page can display text, images, sound, video, web links and embedded code, such as Google maps.
+$string['modulename_help'] = 'The API Proxy module enables a teacher to create a Moodle connector which allows to create remote services hosted by Moodle itself and to calculate and display usage statistics for these services - whether they are hosted by Moodle itself or on other remote servers. 
 
-Advantages of using the page module rather than the file module include the resource being more accessible (for example to users of mobile devices) and easier to update.
+*This would allow these statistics to be incorporated into the rating system.';
 
-For large amounts of content, it\'s recommended that a book is used rather than a page.
-
-A page may be used
-
-* To present the terms and conditions of a course or a summary of the course syllabus
-* To embed several videos or sound files together with some explanatory text';
 $string['modulename_link'] = 'mod/apiproxy/view';
-$string['modulenameplural'] = 'Pages';
+$string['modulenameplural'] = 'API Proxies';
 $string['optionsheader'] = 'Display options';
-$string['apiproxy-mod-apiproxy-x'] = 'Any page module page';
+$string['apiproxy-mod-apiproxy-x'] = 'Any API Proxy module page';
 $string['apiproxy:addinstance'] = 'Add a new API Proxy resource';
-$string['apiproxy:view'] = 'View page content';
-$string['pluginadministration'] = 'Page module administration';
-$string['pluginname'] = 'APIproxy';
+$string['apiproxy:view'] = 'View API Proxy content';
+$string['pluginadministration'] = 'API Proxy module administration';
+$string['pluginname'] = 'API Proxy';
 $string['popupheight'] = 'Pop-up height (in pixels)';
 $string['popupheightexplain'] = 'Specifies default height of popup windows.';
 $string['popupwidth'] = 'Pop-up width (in pixels)';
 $string['popupwidthexplain'] = 'Specifies default width of popup windows.';
-$string['printheading'] = 'Display page name';
-$string['printheadingexplain'] = 'Display page name above content?';
-$string['printintro'] = 'Display page description';
-$string['printintroexplain'] = 'Display page description above content?';
+$string['printheading'] = 'Display API Proxy name';
+$string['printheadingexplain'] = 'Display API Proxy name above content?';
+$string['printintro'] = 'Display APIProxy description';
+$string['printintroexplain'] = 'Display API Proxy description above content?';
 $string['printlastmodified'] = 'Display last modified date';
 $string['printlastmodifiedexplain'] = 'Display last modified date below content?';
-$string['privacy:metadata'] = 'The Page resource plugin does not store any personal data.';
-$string['search:activity'] = 'APIproxy';
+$string['privacy:metadata'] = 'The API Proxy resource plugin does not store any personal data.';
+$string['search:activity'] = 'API Proxy';

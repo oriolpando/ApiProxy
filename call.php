@@ -19,7 +19,7 @@
  * API proxy module version information
  *
  * @package     mod_apiproxy
- * @copyright   2019 Oriol Pando, Daniel Amo
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
  * @author      Oriol Pando <oriol.pando@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,7 +36,7 @@ require_once($CFG->dirroot . '/webservice/lib.php');
 
 $id      = optional_param('id', 0, PARAM_INT); // Course Module ID
 $token     = optional_param('token', 0, PARAM_TEXT); // user token
-$p       = optional_param('y', 0, PARAM_INT);  // Apiproxy instance ID
+$p       = optional_param('y', 0, PARAM_INT);  // APIProxy instance ID
 $inpopup = optional_param('inpopup', 0, PARAM_BOOL);
 $type      = optional_param('type', 0, PARAM_TEXT); // Course Module ID
 
@@ -54,10 +54,10 @@ if(!empty($token)){
             $log = array('apiid' => $id,
                 'userid' => $user['user']->id,
                 'type' => '-',
-                'comment' => 'Fail - Apiproxy not found',
+                'comment' => 'Fail - APIProxy not found',
                 'logtime' => $now->getTimestamp());
             apiproxy_add_log($log);
-            echo 'Invalid ApiProxy - apiproxy not found';
+            echo 'Invalid APIProxy - apiproxy not found';
             exit();
         }else{
 

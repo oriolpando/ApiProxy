@@ -19,7 +19,7 @@
  * API Proxy configuration form
  *
  * @package     mod_apiproxy
- * @copyright   2019 Oriol Pando, Daniel Amo
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
  * @author      Oriol Pando <oriol.pando@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

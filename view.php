@@ -19,7 +19,7 @@
  * API proxy module version information
  *
  * @package     mod_apiproxy
- * @copyright   2019 Oriol Pando, Daniel Amo
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
  * @author      Oriol Pando <oriol.pando@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,7 +33,7 @@ require_once($CFG->dirroot.'/mod/apiproxy/view_form.php');
 
 
 $id      = optional_param('id', 0, PARAM_INT); // Course Module ID
-$p       = optional_param('y', 0, PARAM_INT);  // Apiproxy instance ID
+$p       = optional_param('y', 0, PARAM_INT);  // APIProxy instance ID
 $inpopup = optional_param('inpopup', 0, PARAM_BOOL);
 
 if ($p) {

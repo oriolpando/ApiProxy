@@ -20,7 +20,7 @@
  * API proxy module version information
  *
  * @package     mod_apiproxy
- * @copyright   2019 Oriol Pando, Daniel Amo
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
  * @author      Oriol Pando <oriol.pando@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -54,7 +54,7 @@ if (isset($_POST['cancel'])) {
                 'realparameterpost'=>$_POST['realparameterpost']);
     }
     if(apiproxy_update_instance($apiproxy)){
-        $msg = 'Apiproxy correctly updated!';
+        $msg = 'APIProxy correctly updated!';
     }else{
         $msg = 'Error at updating apiproxy!';
     };

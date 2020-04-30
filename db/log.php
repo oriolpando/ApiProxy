@@ -18,11 +18,11 @@
 /**
  * Definition of log events
  *
- * @package    mod_apiproxy
- * @category   log
- * @copyright  2019 Oriol Pando, Daniel Amo
- * @author     Oriol Pando <oriol.pando@gmail.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     mod_apiproxy
+ * @category    log
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
+ * @author      Oriol Pando <oriol.pando@gmail.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

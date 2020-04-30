@@ -1,3 +1,11 @@
+/**
+ * API Proxy javascript
+ *
+ * @package     mod_apiproxy
+ * @copyright   2019-2020 Oriol Pando, Daniel Amo
+ * @author      Oriol Pando <oriol.pando@gmail.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+*/
 window.onload = function() {  
     document.getElementById("id_gotologs").setAttribute("onclick", "checkForm()");
     document.getElementById("id_cancel").setAttribute("onclick", "checkFormCancel()");
