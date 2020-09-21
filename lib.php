@@ -14,13 +14,32 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// This file is part of APIProxy
+//
+// APIProxy is a plugin developed in Catalunya that helps teacher to understand how
+// students use APIs in their assessments. This project implements an activity for
+// Moodle that works as an API and a middleware to integrate third party APIs that
+// generates statistics of use for teachers. Moodle is a Free Open source Learning
+// Management System by Martin Dougiamas.
+// ProxyAPI is a project initiated and leaded by Daniel Amo at the GRETEL research
+// group at La Salle Campus Barcelona, Universitat Ramon Llull.
+//
+// ProxyAPI is copyrighted 2020 by Daniel Amo and Oriol Pando
+// of the La Salle Campus Barcelona, Universitat Ramon Llull https://www.salleurl.edu
+// Contact info: Daniel Amo Filvà  danielamo @ gmail.com or daniel.amo @ salle.url.edu.
 
 /**
+ * APIProxy DB functions
  *
- * @package     mod_apiproxy
- * @copyright   2019-2020 Oriol Pando, Daniel Amo
- * @author      Oriol Pando <oriol.pando@gmail.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package mod_apiproxy
+ * @copyright  2020 Daniel Amo, Oriol Pando
+ *  daniel.amo@salle.url.edu
+ *  oriolpando@gmail.com
+ * @copyright  2020 La Salle Campus Barcelona, Universitat Ramon Llull https://www.salleurl.edu
+ * @author     Daniel Amo
+ * @author     Oriol Pando
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
@@ -85,14 +104,15 @@ function apiproxy_add_instance($data, $mform = null) {
 
     
     require_once("$CFG->libdir/resourcelib.php");
-
-
    
     $cmid = $data->coursemodule;
     $data->name = $data->apiname;
 
     $localparametersget = $data->localparameter;
     $localparameterspost = $data->localparameterpost;
+    $requiredparameters = $data->requiredparameter;
+    $requiredparameterspost = $data->requiredparameterpost;
+    $endpoints = $data->endpoint;
 
     $error = false;
     if (strcmp($data->apitype,'extern') == 0) {
@@ -126,7 +146,7 @@ function apiproxy_add_instance($data, $mform = null) {
 
 
 
-    $paramfields = array('apiid', 'localparameter', 'realparameter', 'type');
+    $paramfields = array('apiid', 'localparameter', 'realparameter', 'type', 'required');
 
 
     $info = new \stdClass();
@@ -134,6 +154,11 @@ function apiproxy_add_instance($data, $mform = null) {
     for ($i = 0; $i < count($localparametersget); $i++){
         $error = false;
         $info->apiid = $data->id;
+        if (isset($requiredparameters[$i])) {
+            $info->required = true;
+        }else {
+            $info->required = false;
+        }
         if (strcmp(preg_replace('/\s+/', '',$localparametersget[$i]), '') == 0) {
             $error = true;
         }else{
@@ -182,9 +207,37 @@ function apiproxy_add_instance($data, $mform = null) {
             if ($DB->get_record('apiproxy_parameters', array('apiid'=>$info->apiid,'localparameter'=>$info->localparameter, 'type'=>$info->type))) {
                 $DB->delete_records('apiproxy_parameters', array('apiid'=>$info->apiid, 'localparameter'=>$info->localparameter, 'type'=>$info->type));
             }
+            if (isset($requiredparameterspost[$i])) {
+                $info->required = true;
+            }else {
+                $info->required = false;
+            }
+            
             $DB->insert_record('apiproxy_parameters', $info, $paramfields);
         }
     }
+
+    //Inserts POST endpoints on table
+    $paramfields = array('apiid', 'endpoint');
+
+    $info = new \stdClass();
+
+    for ($i = 0; $i < count($endpoints); $i++){
+        $info->apiid = $data->id;
+        if (strcmp(preg_replace('/\s+/', '',$endpoints[$i]), '') == 0) {
+            $error = true;
+        }else{
+            $info->endpoint = preg_replace('/\s+/', '',$endpoints[$i]);
+        }
+        
+        if (!$error){
+            if ($DB->get_record('apiproxy_endpoints', array('apiid'=>$info->apiid,'endpoint'=>$info->endpoint))){
+                $DB->delete_records('apiproxy_endpoints', array('apiid'=>$info->apiid, 'endpoint'=>$info->endpoint));
+            }
+            $DB->insert_record('apiproxy_endpoints', $info, $paramfields);
+        } 
+    }
+
     
     return $data->id;
 }
@@ -234,6 +287,9 @@ function apiproxy_update_instance($data) {
             $realparametersget = $data['realparameter'];
             $realparameterspost = $data['realparameterpost'];
         }
+        $requiredparameters = $data['requiredparameter'];
+        $requiredparameterspost = $data['requiredparameterpost'];
+        $endpoints = $data['endpoint'];
 
     }else{
         $record->id = $_SESSION['apiproxy']->id;
@@ -247,12 +303,19 @@ function apiproxy_update_instance($data) {
             $realparametersget = $data->realparameter;
             $realparameterspost = $data->realparameterpost;
         }
+        $requiredparameters = $data->requiredparameter;
+        $requiredparameterspost = $data->requiredparameterpost;
+        $endpoints = $data->endpoint;
     }
+
+    
+    
+
 
     $realurl = $record->realurl;
 
 
-    $paramfields = array('apiid', 'localparameter', 'realparameter', 'type');
+    $paramfields = array('apiid', 'localparameter', 'realparameter', 'type', 'required');
 
 
     $info = new \stdClass();
@@ -280,6 +343,11 @@ function apiproxy_update_instance($data) {
             }
         }
         $info->type = 'GET';
+        if (isset($requiredparameters[$i])) {
+            $info->required = true;
+        }else {
+            $info->required = false;
+        }
         if (!$error){
             if ($DB->get_record('apiproxy_parameters', array('apiid'=>$info->apiid,'localparameter'=>$info->localparameter, 'type'=>$info->type))) {
                 $DB->delete_records('apiproxy_parameters', array('apiid'=>$info->apiid, 'localparameter'=>$info->localparameter, 'type'=>$info->type));
@@ -308,12 +376,39 @@ function apiproxy_update_instance($data) {
             }
         }
         $info->type = 'POST';
+        if (isset($requiredparameterspost[$i])) {
+            $info->required = true;
+        }else {
+            $info->required = false;
+        }
         if (!$error){
             if ($DB->get_record('apiproxy_parameters', array('apiid'=>$info->apiid, 'localparameter'=>$info->localparameter, 'type'=>$info->type))) {
                 $DB->delete_records('apiproxy_parameters', array('apiid'=>$info->apiid, 'localparameter'=>$info->localparameter, 'type'=>$info->type));
             }
             $DB->insert_record('apiproxy_parameters', $info, $paramfields);
         }
+    }
+
+    //Inserts POST endpoints on table
+    $paramfields = array('apiid', 'endpoint');
+
+    $info = new \stdClass();
+
+
+    for ($i = 0; $i < count($endpoints); $i++){
+        $error = false;
+        $info->apiid = $record->id;
+        if (strcmp(preg_replace('/\s+/', '',$endpoints[$i]), '') == 0) {
+            $error = true;
+        }else{
+            $info->endpoint = preg_replace('/\s+/', '',$endpoints[$i]);
+        }
+        if (!$error){
+            if ($DB->get_record('apiproxy_endpoints', array('apiid'=>$info->apiid,'endpoint'=>$info->endpoint))){
+                $DB->delete_records('apiproxy_endpoints', array('apiid'=>$info->apiid, 'endpoint'=>$info->endpoint));
+            }
+            $DB->insert_record('apiproxy_endpoints', $info, $paramfields);
+        } 
     }
 
 
@@ -334,9 +429,12 @@ function apiproxy_view($apiproxy, $course, $cm, $context) {
     $info = $DB->get_records_select('apiproxy_parameters', $select, $params, $sort='', $fields='*', $limitfrom=0, $limitnum=0);
     $info = array_values($info);
 
+
+
     for ($i = 0; $i < count($info); $i++){
         $apiproxy->getparameterslocal[$i] = $info[$i]->localparameter;
         $apiproxy->getparametersreal[$i] = $info[$i]->realparameter;
+        $apiproxy->getparametersrequired[$i] = $info[$i]->required;
     }
 
 
@@ -348,6 +446,7 @@ function apiproxy_view($apiproxy, $course, $cm, $context) {
     for ($i = 0; $i < count($info); $i++){
         $apiproxy->postparameterslocal[$i] = $info[$i]->localparameter;
         $apiproxy->postparametersreal[$i] = $info[$i]->realparameter;
+        $apiproxy->postparametersrequired[$i] = $info[$i]->required;
     }
 
     if (strcmp($apiproxy->realurl, '-') == 0) {
@@ -356,6 +455,15 @@ function apiproxy_view($apiproxy, $course, $cm, $context) {
         $apiproxy->type = "Extern (3rd Person API)";
     }
 
+    //Endpoints
+    $select = "apiid = ?";
+    $params = array($apiproxy->id);
+    $info = $DB->get_records_select('apiproxy_endpoints', $select, $params, $sort='', $fields='*', $limitfrom=0, $limitnum=0);
+    $info = array_values($info);
+
+    for ($i = 0; $i < count($info); $i++){
+        $apiproxy->endpoints[$i] = $info[$i]->endpoint;
+    }
     // Trigger course_module_viewed event.
     $params = array(
         'context' => $context,
@@ -424,6 +532,8 @@ function apiproxy_get_info($id) {
     for ($i = 0; $i < count($info); $i++){
         $apiproxy->getparameterslocal[$i] = $info[$i]->localparameter;
         $apiproxy->getparametersreal[$i] = $info[$i]->realparameter;
+        $apiproxy->getparametersrequired[$i] = $info[$i]->required;
+
     }
 
 
@@ -435,6 +545,16 @@ function apiproxy_get_info($id) {
     for ($i = 0; $i < count($info); $i++){
         $apiproxy->postparameterslocal[$i] = $info[$i]->localparameter;
         $apiproxy->postparametersreal[$i] = $info[$i]->realparameter;
+        $apiproxy->postparametersrequired[$i] = $info[$i]->required;
+    }
+
+    $select = "apiid = ?";
+    $params = array($id);
+    $info = $DB->get_records_select('apiproxy_endpoints', $select, $params, $sort='', $fields='*', $limitfrom=0, $limitnum=0);
+    $info = array_values($info);
+
+    for ($i = 0; $i < count($info); $i++){
+        $apiproxy->endpoints[$i] = $info[$i]->endpoint;
     }
 
     return $apiproxy;

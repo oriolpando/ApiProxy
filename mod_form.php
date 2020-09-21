@@ -14,14 +14,32 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// This file is part of APIProxy
+//
+// APIProxy is a plugin developed in Catalunya that helps teacher to understand how
+// students use APIs in their assessments. This project implements an activity for
+// Moodle that works as an API and a middleware to integrate third party APIs that
+// generates statistics of use for teachers. Moodle is a Free Open source Learning
+// Management System by Martin Dougiamas.
+// ProxyAPI is a project initiated and leaded by Daniel Amo at the GRETEL research
+// group at La Salle Campus Barcelona, Universitat Ramon Llull.
+//
+// ProxyAPI is copyrighted 2020 by Daniel Amo and Oriol Pando
+// of the La Salle Campus Barcelona, Universitat Ramon Llull https://www.salleurl.edu
+// Contact info: Daniel Amo Filvà  danielamo @ gmail.com or daniel.amo @ salle.url.edu.
 
 /**
  * API Proxy configuration form
  *
- * @package     mod_apiproxy
- * @copyright   2019-2020 Oriol Pando, Daniel Amo
- * @author      Oriol Pando <oriol.pando@gmail.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package mod_apiproxy
+ * @copyright  2020 Daniel Amo, Oriol Pando
+ *  daniel.amo@salle.url.edu
+ *  oriolpando@gmail.com
+ * @copyright  2020 La Salle Campus Barcelona, Universitat Ramon Llull https://www.salleurl.edu
+ * @author     Daniel Amo
+ * @author     Oriol Pando
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
@@ -33,6 +51,18 @@ require_once($CFG->libdir.'/filelib.php');
 class mod_apiproxy_mod_form extends moodleform_mod {
     function definition() {
         global $CFG, $DB;
+
+        $id = optional_param('update', null, PARAM_INT); // Course Module ID
+
+        if (!$cm = get_coursemodule_from_id('apiproxy', $id)) {
+           // print_error('invalidcoursemodule');
+        }
+        if (isset($id) && isset($cm)) {
+            $apiproxyInfo = $DB->get_record('apiproxy', array('id'=>$cm->instance), '*', MUST_EXIST);
+            $_SESSION['apiproxy'] = $apiproxyInfo;
+            redirect($CFG->wwwroot . '/mod/apiproxy/view.php?id='. $cm->id);
+        }
+        $config = get_config('apiproxy');
 
         $mform = $this->_form;
 
@@ -92,6 +122,7 @@ class mod_apiproxy_mod_form extends moodleform_mod {
         $repeatarray = array();
         $repeatarray[] = $mform->createElement('text', 'localparameter', get_string('localparametersget', 'apiproxy'));
         $repeatarray[] = $mform->createElement('text', 'realparameter', get_string('realparametersget', 'apiproxy'));
+        $repeatarray[] = $mform->createElement('checkbox', 'requiredparameter', get_string('requiredParameter', 'apiproxy'));
         $repeatarray[] = $mform->createElement('hidden', 'optionid', 0);
 
 
@@ -102,6 +133,8 @@ class mod_apiproxy_mod_form extends moodleform_mod {
         $repeateloptions['localparameter']['type'] = PARAM_TEXT;
         $repeateloptions['realparameter']['type'] = PARAM_TEXT;
         $repeateloptions['realparameter']['hideif'] = array('apitype', 'eq', 'intern');
+        $repeateloptions['requiredparameter']['type'] = PARAM_BOOL;
+        $repeateloptions['requiredparameter']['default'] = false;
 
         $mform->setType('option', PARAM_CLEANHTML);
 
@@ -116,6 +149,7 @@ class mod_apiproxy_mod_form extends moodleform_mod {
         $repeatarraypost = array();
         $repeatarraypost[] = $mform->createElement('text', 'localparameterpost', get_string('localparameterspost', 'apiproxy'));
         $repeatarraypost[] = $mform->createElement('text', 'realparameterpost', get_string('realparameterspost', 'apiproxy'));
+        $repeatarraypost[] = $mform->createElement('checkbox', 'requiredparameterpost', get_string('requiredParameter', 'apiproxy'));
         $repeatarraypost[] = $mform->createElement('hidden', 'optionidpost', 1);
 
 
@@ -126,6 +160,8 @@ class mod_apiproxy_mod_form extends moodleform_mod {
         $repeateloptionspost['localparameterpost']['type'] = PARAM_TEXT;
         $repeateloptionspost['realparameterpost']['type'] = PARAM_TEXT;
         $repeateloptionspost['realparameterpost']['hideif'] = array('apitype', 'eq', 'intern');
+        $repeateloptionspost['requiredparameterpost']['type'] = PARAM_BOOL;
+        $repeateloptionspost['requiredparameterpost']['default'] = false;
 
         $mform->setType('optionpost', PARAM_CLEANHTML);
 
@@ -133,6 +169,23 @@ class mod_apiproxy_mod_form extends moodleform_mod {
 
         $this->repeat_elements($repeatarraypost, $repeatnopost,
                     $repeateloptionspost, 'post_repeats', 'post_add_fields', 1, null, true);
+
+        $repeatarrayendpoint = array();
+        $repeatarrayendpoint[] = $mform->createElement('text', 'endpoint', get_string('endpoint', 'apiproxy'));
+
+
+        $repeatnoendpoint = 1;
+
+        $repeateloptionsendpoint = array();
+        $repeateloptionsendpoint['endpoint']['type'] = PARAM_TEXT;
+
+        $mform->setType('optionendpoint', PARAM_CLEANHTML);
+
+        $mform->setType('optionidendpoint', PARAM_INT);
+
+        $this->repeat_elements($repeatarrayendpoint, $repeatnoendpoint,
+                    $repeateloptionsendpoint, 'endpoint_repeats', 'endpoint_add_fields', 1, null, true);
+
 
 
 
