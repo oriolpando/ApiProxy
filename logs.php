@@ -58,11 +58,11 @@ $p       = optional_param('y', 0, PARAM_INT);  // APIProxy instance ID
 $inpopup = optional_param('inpopup', 0, PARAM_BOOL);
 
 
-$PAGE->requires->js('/mod/apiproxy/js/tabulator-master/dist/js/tabulator.js');
+//$PAGE->requires->js('/mod/apiproxy/js/tabulator-master/dist/js/tabulator.js');
 $PAGE->requires->css('/mod/apiproxy/style/styles.css');
-$PAGE->requires->css('/mod/apiproxy/js/tabulator-master/dist/css/tabulator.css');
+//$PAGE->requires->css('/mod/apiproxy/js/tabulator-master/dist/css/tabulator.css');
 //$PAGE->requires->js('/mod/apiproxy/js/order.js');
-$PAGE->requires->js_call_amd('mod_apiproxy/order', 'init');
+//$PAGE->requires->js_call_amd('mod_apiproxy/order', 'init');
 
 
 
