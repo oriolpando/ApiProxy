@@ -57,7 +57,7 @@ class mod_apiproxy_mod_form extends moodleform_mod {
         if (!$cm = get_coursemodule_from_id('apiproxy', $id)) {
            // print_error('invalidcoursemodule');
         }
-        if (isset($id) && isset($cm)) {
+        if (isset($id) && isset($cm) && $id != 0) {
             $apiproxyInfo = $DB->get_record('apiproxy', array('id'=>$cm->instance), '*', MUST_EXIST);
             $_SESSION['apiproxy'] = $apiproxyInfo;
             redirect($CFG->wwwroot . '/mod/apiproxy/view.php?id='. $cm->id);
